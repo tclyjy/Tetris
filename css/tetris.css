@@ -14,6 +14,7 @@
 	position:absolute;
 	z-index:10;
 	width:26px;
+	height: 26px;
 }
 .playground p{
 	font-size: 30px;
@@ -26,3 +27,11 @@
 }
 .playground p+p{top:176px;}
 .playground p+p+p{top:232px;}          
+
+.viewground {
+	width: 260px;
+	height: 520px;
+	position: absolute;
+	top: 15px;
+	left: 15px;
+}
