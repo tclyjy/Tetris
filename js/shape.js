@@ -2,7 +2,7 @@
 * @Author: XM-web
 * @Date:   2016-11-18 14:21:19
 * @Last Modified by:   XM-web
-* @Last Modified time: 2016-11-18 15:32:55
+* @Last Modified time: 2016-11-18 21:00:09
 */
 
 'use strict';
@@ -32,12 +32,24 @@ Shape.prototype={
 		J:"img/J.png",
 		S:"img/S.png",
 		Z:"img/Z.png"
-	}
-/*	moveDown:function(){},
-	moveLeft:function(){},
-	moveRight:function(){},
+	},
+	moveDown:function(){
+		$(this.cells).each(function(index){
+			this.r += 1;
+		})
+	},
+	moveLeft:function(){
+		$(this.cells).each(function(index){
+			this.c -= 1;
+		})
+	},
+	moveRight:function(){
+		$(this.cells).each(function(index){
+			this.c += 1;
+		})
+	},
 	rotateR:function(){},
-	rotateL:function(){}*/
+	rotateL:function(){}
 }
 
 //T图形数据结构
@@ -58,7 +70,7 @@ function L(){
 Object.setPrototypeOf(L.prototype, Shape.prototype);
 //I图形数据结构
 function I(){
-	Shape.call(this,0,5,1,5,2,5,3,5,this.IMG.I);
+	Shape.call(this,0,4,1,4,2,4,3,4,this.IMG.I);
 }
 Object.setPrototypeOf(I.prototype, Shape.prototype);
 //J图形数据结构
