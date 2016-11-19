@@ -2,7 +2,7 @@
 * @Author: XM-web
 * @Date:   2016-11-18 14:21:19
 * @Last Modified by:   XM-web
-* @Last Modified time: 2016-11-19 09:41:32
+* @Last Modified time: 2016-11-19 11:59:30
 */
 
 'use strict';
@@ -70,7 +70,7 @@ function L(){
 Object.setPrototypeOf(L.prototype, Shape.prototype);
 //I图形数据结构
 function I(){
-	Shape.call(this,0,4,1,4,2,4,3,4,this.IMG.I);
+	Shape.call(this,0,3,0,4,0,5,0,6,this.IMG.I);
 }
 Object.setPrototypeOf(I.prototype, Shape.prototype);
 //J图形数据结构
