@@ -18,8 +18,19 @@ var game = {
     wall: null, //停止方块下落的墙
     RN: 20,
     CN: 10, //保存总行数和总列数
+    lines:0,//保存总行数
+    score:0,//保存得分
+    SCORES:[0,10,30,60,120],
+        //0  1  2  3  4
+    state:1,//保存游戏状态
+    GAMEOVER:0,//游戏结束
+    RUNNING:1,//运行
+    PAUSE:2,//暂停
     start: function() {
+        $('img').remove();
         this.pg = $('.viewground');
+        this.score = 0;
+        this.lines = 0;
         this.shape = new T();
         this.randomShape();
         this.wall = [];
@@ -30,8 +41,68 @@ var game = {
         this.paintNextShape();
         this.timer = setInterval(function() {
             this.moveDown();
-        }.bind(game), this.interval);
+        }.bind(this), this.interval);
     },
+
+    continue:function(){
+        $('.state').remove();
+        this.state=this.RUNNING;
+        clearInterval(this.timer);
+        this.timer = setInterval(function(){
+            this.moveDown();
+        }.bind(this),this.interval);
+    },
+
+    pause:function(){
+    //停止定时器,清除timer,修改状态为暂停
+    clearInterval(this.timer);
+    this.timer=null;
+    this.state=this.PAUSE;
+    this.paintState();
+    },
+
+    gameover: function(){
+        //清除定时器
+        clearInterval(this.timer);
+        //重置定时器
+        this.timer = null;
+        //附加游戏状态
+        this.state = this.GAMEOVER;
+        this.paintState();
+    },
+
+    isGameover:function(){
+        for(var i=0;i<this.nextShape.cells.length;i++){
+            var cell=this.nextShape.cells[i];
+            //如果wall中和cell相同位置有格
+            if(this.wall[cell.r][cell.c])
+                return true;//返回true
+        }//(遍历结束)
+        return false;//返回false
+    },
+
+    paintScore:function(){
+    //找到class为lines的span，设置其内容为lines
+        $(".lines").html(this.lines);
+    //找到class为score的span，设置其内容为score
+        $(".score").html(this.score);
+    },
+
+    //绘制状态
+    paintState:function(){
+        if(this.state!=this.RUNNING){
+            var src = this.state==this.GAMEOVER? "img/game-over.png":"img/pause.png";
+            $('<img>').attr({
+                src: src
+            }).css({
+                width: '525px',
+                height: '550px'
+            })
+            .addClass('state')
+            .appendTo($('.playground'))
+        }
+    },
+
     //绘制正在下落的图形
     paintShape: function() {
         var that = this;
@@ -88,14 +159,20 @@ var game = {
             this.animate();
         } else {
             this.landIntoWall();
-            this.deleteWallRows();
+            this.lines = this.deleteWallRows();
+            this.score = this.SCORES[this.lines];
+            this.paintScore();
             this.paintWall();
             $('.moving').remove();
             this.shape = this.nextShape;
             this.randomShape();
             $('.next-shape').remove();
-            this.paintNextShape();
-            this.paintShape();
+            if(this.isGameover()){
+                this.gameover()
+            }else{
+                this.paintNextShape();
+                this.paintShape();
+            }            
         }
     },
 
@@ -149,18 +226,17 @@ var game = {
     },
 
     rotateR: function() {
-        if (this.canRotate()) {
-            this.shape.rotateR();
-            this.animate();
-        }
-
+        this.shape.rotateR();
+        //如果不能旋转，就反向再转回来
+        if(!this.canRotate()){this.shape.rotateL();}
+        this.animate();
     },
 
     rotateL: function() {
-        if (this.canRotate()) {
-            this.shape.rotateL();
-            this.animate();
-        }
+        this.shape.rotateL();
+       //如果不能旋转，就反向再转回来
+        if(!this.canRotate()){this.shape.rotateR();}
+        this.animate();
     },
 
     canRotate: function() {
@@ -178,7 +254,7 @@ var game = {
     },
 
     //将沉底元素加入well
-        landIntoWall: function() {
+    landIntoWall: function() {
         var that = this;
         $(that.shape.cells).each(function() {
             that.wall[this.r][this.c] = this;
@@ -244,17 +320,6 @@ var game = {
 
     //删除满格行
     deleteWallRows: function() {
-        /* for (var r = this.RN - 1, ln = 0; r >= 0; r--) {
-             console.log(this.wall[r].toString());
-             if (!this.wall[r].toString().match(/^,|,,|,$/)) {
-                 this.deleteWallRow(r);
-                 for (var c = 0; c < this.CN; c++) {
-
-                     this.wall[r][c] = undefined;
-
-                 }
-             }
-         }*/
         //自底向上遍历wall中每一行,声明ln=0
         for (var r = this.RN - 1, ln = 0; r >= 0; r--) {
             //如果当前行是空行,就退出循环
@@ -303,19 +368,31 @@ game.start();
 $(document).on('keydown', function(e) {
     switch (e.keyCode) {
         case 37:
-            game.moveLeft()
+            game.state==game.RUNNING&&game.moveLeft()
             break;
         case 39:
-            game.moveRight()
+            game.state==game.RUNNING&&game.moveRight()
             break;
         case 40:
-            game.pushDown()
+            game.state==game.RUNNING&&game.pushDown()
             break;
         case 90:
-            game.rotateL()
+            game.state==game.RUNNING&&game.rotateL()
             break;
         case 88:
-            game.rotateR()
+            game.state==game.RUNNING&&game.rotateR()
             break;
+        case 80:
+            game.state==game.RUNNING&&game.pause();
+            break;
+        case 67:
+            game.state==game.PAUSE&&game.continue();
+            break;
+        case 81:
+            game.state==game.PAUSE&&game.start();
+            break;
+        case 83:
+            game.state==game.GAMEOVER&&game.start();
+
     }
 })
