@@ -2,7 +2,7 @@
  * @Author: XM-web
  * @Date:   2016-11-18 15:17:07
  * @Last Modified by:   XM-web
- * @Last Modified time: 2016-11-19 16:06:13
+ * @Last Modified time: 2016-11-21 10:53:08
  */
 
 'use strict';
@@ -27,6 +27,7 @@ var game = {
     RUNNING:1,//运行
     PAUSE:2,//暂停
     start: function() {
+        this.state=this.RUNNING;
         $('img').remove();
         this.pg = $('.viewground');
         this.score = 0;
@@ -278,14 +279,14 @@ var game = {
 
     //随机生成方块
     randomShape: function() {
-        switch (Math.floor(Math.random() * 4)) {
+        switch (Math.floor(Math.random() * 8)) {
             case 1:
                 this.nextShape = new T()
                 break;
             case 2:
                 this.nextShape = new O()
                 break;
-                /*case 3:
+                case 3:
                     this.nextShape = new S()
                     break;
                 case 4:
@@ -296,7 +297,7 @@ var game = {
                     break;
                 case 6:
                     this.nextShape = new J()
-                    break;*/
+                    break;
             default:
                 this.nextShape = new I()
                 break;

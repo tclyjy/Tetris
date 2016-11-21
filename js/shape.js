@@ -2,7 +2,7 @@
 * @Author: XM-web
 * @Date:   2016-11-18 14:21:19
 * @Last Modified by:   XM-web
-* @Last Modified time: 2016-11-19 15:37:23
+* @Last Modified time: 2016-11-21 10:45:06
 */
 
 'use strict';
@@ -105,7 +105,13 @@ function O(){
 Object.setPrototypeOf(O.prototype, Shape.prototype);
 //L图形数据结构
 function L(){
-	Shape.call(this,0,4,1,4,2,4,2,5,this.IMG.L);
+	Shape.call(this,0,4,1,4,2,4,2,5,this.IMG.L,
+		[
+		new State(-1,0,0,0,1,0,1,1),
+		new State(0,1,0,0,0,-1,1,-1),
+		new State(1,0,0,0,-1,0,-1,-1),
+		new State(0,-1,0,0,0,1,-1,1)
+		],1);
 }
 Object.setPrototypeOf(L.prototype, Shape.prototype);
 //I图形数据结构
@@ -119,16 +125,30 @@ function I(){
 Object.setPrototypeOf(I.prototype, Shape.prototype);
 //J图形数据结构
 function J(){
-	Shape.call(this,0,5,1,5,2,5,2,4,this.IMG.J);
+	Shape.call(this,0,5,1,5,2,5,2,4,this.IMG.J,
+		[
+		new State(-1,0,0,0,1,0,1,-1),
+		new State(0,1,0,0,0,-1,-1,-1),
+		new State(1,0,0,0,-1,0,-1,1),
+		new State(0,-1,0,0,0,1,1,1)
+		],1);
 }
 Object.setPrototypeOf(J.prototype, Shape.prototype);
 //S图形数据结构
 function S(){
-	Shape.call(this,0,4,0,5,1,4,1,3,this.IMG.S);
+	Shape.call(this,0,4,0,5,1,4,1,3,this.IMG.S,
+		[
+		new State(-1,0,-1,1,0,0,0,-1),
+		new State(0,1,1,1,0,0,-1,0)
+		],2);
 }
 Object.setPrototypeOf(S.prototype, Shape.prototype);
 //Z图形数据结构
 function Z(){
-	Shape.call(this,0,4,0,5,1,5,1,6,this.IMG.Z);
+	Shape.call(this,0,4,0,5,1,5,1,6,this.IMG.Z,
+		[
+		new State(0,-1,0,0,1,0,1,1),
+		new State(-1,0,0,0,0,-1,1,-1)
+		],1);
 }
 Object.setPrototypeOf(Z.prototype, Shape.prototype);
