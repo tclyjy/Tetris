@@ -2,7 +2,7 @@
  * @Author: XM-web
  * @Date:   2016-11-18 15:17:07
  * @Last Modified by:   XM-web
- * @Last Modified time: 2016-11-21 10:53:08
+ * @Last Modified time: 2016-11-21 11:12:48
  */
 
 'use strict';
@@ -180,7 +180,7 @@ var game = {
     canLeft: function() {
         var that = this;
         var bool = true;
-        $(that.shape.cells).each(function(index) {
+        $(that.shape.cells).each(function() {
             if (this.c == 0 || that.wall[this.r][this.c - 1] != undefined)
                 bool = false;
         })
@@ -243,7 +243,7 @@ var game = {
     canRotate: function() {
         var that = this;
         var bool = true;
-        $(that.shape.cells).each(function(index) {
+        $(that.shape.cells).each(function() {
             if (this.c < 0 || this.c >= that.CN || this.r < 0 || this.r >= that.RN || that.wall[this.r][this.c] != undefined)
                 bool = false;
         })
